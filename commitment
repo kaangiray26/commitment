@@ -23,7 +23,8 @@ while IFS= read -r line; do
         arr=($line)
         if [[ ${#arr[@]} > 1 ]]
         then
-            git commit -m '"${arr[@]:1}"' -- "${arr[0]}"
+            path=${arr[0]}
+            git commit -m '"${arr[@]:1}"' $path
             git push
         fi 
     fi
