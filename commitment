@@ -1,0 +1,30 @@
+#!/bin/bash
+editor="nano"
+files=$(git diff --cached --name-only --oneline)
+
+if [ -z "$files" ]
+then
+    echo "Nothing to commit."
+    exit 0
+fi
+
+> .commitment
+echo -e "# https://github.com/kaangiray26/commitment\n# Please type your commit messages.\n" >> .commitment
+
+while IFS= read -r line; do
+    echo "#$line " >> .commitment
+done <<< "$files"
+
+$editor .commitment
+
+while IFS= read -r line; do
+    if ! [[ $line == \#* ]]
+    then
+        arr=($line)
+        if [[ ${#arr[@]} > 1 ]]
+        then
+            git commit -m '"${arr[@]:1}"' "${arr[0]}"
+            git push
+        fi 
+    fi
+done < .commitment
