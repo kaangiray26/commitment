@@ -26,8 +26,9 @@ while IFS= read -r line; do
             message=${arr[@]:1}
             message=${message//$'\t\r\n'/}
 
-            git commit -m \""$message\"" "${arr[0]}"
-            git push
+            git commit -m "$message" "${arr[0]}" --quiet
+            git push --quiet
         fi 
     fi
 done < .commitment
+echo "done."
