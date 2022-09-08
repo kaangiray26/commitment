@@ -1,6 +1,7 @@
 #!/bin/bash
 editor="nano"
 files=$(git diff --cached --name-only --oneline)
+changed=0
 
 if [ -z "$files" ]
 then
@@ -25,10 +26,14 @@ while IFS= read -r line; do
         then
             message=${arr[@]:1}
             message=${message//$'\t\r\n'/}
-
+            
             git commit -m "$message" "${arr[0]}" --quiet
-            git push --quiet
-        fi 
+            changed=1
+        fi
     fi
 done < .commitment
+
+if [[ changed -eq 1 ]]; then
+    git push
+fi
 echo "done."
