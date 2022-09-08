@@ -1,5 +1,5 @@
 # commitment
-Configure commit messages individually
+Configure git commit messages individually
 
 ## Installation
 ```
